@@ -19,13 +19,28 @@ $(() => {
 
     while (IMAGE_IDS.length > 0 && !stopped) {
       const currentBatch = IMAGE_IDS.splice(0, BATCH_SIZE)
-      batches.push(currentBatch)
+      batches.push(
+        asyncDownloader.downloadBatch(currentBatch, (isImage = true))
+      )
     }
 
     // synchronously draw each batch in the list of batchs
-    return batches.reduce((batchQueue, currentBatch) => {
-      drawCurrentBatch(currentBatch)
-    })
+    return batches
+      .reduce(
+        (batchQueue, currentBatch) =>
+          batchQueue.then(previousRun =>
+            currentBatch.then(batch => {
+              drawCurrentBatch(batch)
+              return [...previousRun, batch]
+            })
+          ),
+        Promise.resolve([])
+      )
+      .then(batches =>
+        console.log(
+          `Load successful - ${batches.length} batches of images were loaded`
+        )
+      )
   }
 
   const stopLoading = () => {

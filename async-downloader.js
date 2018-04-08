@@ -3,7 +3,20 @@ function AsyncDownloader(batchSize, downloadFn) {
   this.downloadFn = downloadFn
 }
 
-AsyncDownloader.prototype.downloadBatch = (batch, isImage, callback) => {
+AsyncDownloader.prototype.downloadImage = function(id, callback) {
+  const image = new Image()
+  const url = this.downloadFn(id)
+  return new Promise((resolve, reject) => {
+    image.onload = () => {
+      callback(image)
+      resolve(image)
+    }
+    image.onerror = () => reject(image)
+    image.src = url
+  })
+}
+
+AsyncDownloader.prototype.downloadBatch = function(batch, isImage) {
   return new Promise((resolve, reject) => {
     let downloadedData = []
     for (let data of batch) {
@@ -12,21 +25,9 @@ AsyncDownloader.prototype.downloadBatch = (batch, isImage, callback) => {
           downloadedData.push(data)
           if (downloadedData.length === this.BATCH_SIZE) {
             resolve(downloadedData)
-          } else {
-            reject()
           }
         })
       }
     }
-  })
-}
-
-AsyncDownloader.prototype.downloadImage = (id, callback) => {
-  const image = new Image()
-  const url = this.downloadFn(id)
-  return new Promise((resolve, reject) => {
-    image.onload = () => resolve(image)
-    image.onerror = () => reject(image)
-    image.src = url
   })
 }
