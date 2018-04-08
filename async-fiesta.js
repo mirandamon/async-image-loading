@@ -1,28 +1,30 @@
-const CHUNK_SIZE = 5
+const BATCH_SIZE = 5
 
 $(() => {
   let stopped = true
 
   const $bucket = $('.photo-bucket')
   const draw = img => $bucket.append(img)
-  const drawCurrentChunk = chunk => chunk.forEach(image => draw(image))
+  const drawCurrentBatch = batch => batch.forEach(image => draw(image))
 
   // NOTE: The height and width variables can be changed to fetch different sized images.
   const getImageUrl = id =>
     `https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/cache=expiry:max/rotate=deg:exif/rotate=deg:0/resize=width:30,height:30,fit:crop/output=format:jpg,quality:95/compress/${id}`
 
+  const asyncDownloader = new AsyncDownloader(BATCH_SIZE, getImageUrl)
+
   const startLoading = () => {
     stopped = false
-    let chunks = []
+    let batches = []
 
     while (IMAGE_IDS.length > 0 && !stopped) {
-      const currentChunk = IMAGE_IDS.splice(0, CHUNK_SIZE)
-      chunks.push(currentChunk)
+      const currentBatch = IMAGE_IDS.splice(0, BATCH_SIZE)
+      batches.push(currentBatch)
     }
 
-    // synchronously draw each chunk in the list of chunks
-    return chunks.reduce((chunkQueue, currentChunk) => {
-      drawCurrentChunk(currentChunk)
+    // synchronously draw each batch in the list of batchs
+    return batches.reduce((batchQueue, currentBatch) => {
+      drawCurrentBatch(currentBatch)
     })
   }
 
