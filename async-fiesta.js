@@ -2,6 +2,7 @@ const BATCH_SIZE = 5
 
 $(() => {
   let stopped = true
+  let startedPreviously = false
 
   const $bucket = $('.photo-bucket')
   const draw = img => $bucket.append(img)
@@ -17,14 +18,30 @@ $(() => {
     stopped = false
     let batches = []
 
-    while (IMAGE_IDS.length > 0 && !stopped) {
-      const currentBatch = IMAGE_IDS.splice(0, BATCH_SIZE)
-      batches.push(
-        asyncDownloader.downloadBatch(currentBatch, (isImage = true))
-      )
+    if (!startedPreviously) {
+      startedPreviously = true
+      while (IMAGE_IDS.length > 0 && !stopped) {
+        const currentBatch = IMAGE_IDS.splice(0, BATCH_SIZE)
+        batches.push(
+          asyncDownloader.downloadBatch(currentBatch, (isImage = true))
+        )
+      }
+    } else {
+      resumedBatches = asyncDownloader.batchedReqs
+      while (resumedBatches.length > 0 && !stopped) {
+        const currentBatch = resumedBatches.splice(0, 1)[0]
+        batches.push(
+          asyncDownloader.downloadBatch(
+            currentBatch,
+            (isImage = true),
+            (isRetry = true)
+          )
+        )
+      }
     }
 
-    // synchronously draw each batch in the list of batchs
+    // synchronously draw each batch in the list of batches
+    console.log(batches)
     return batches
       .reduce(
         (batchQueue, currentBatch) =>
@@ -34,19 +51,23 @@ $(() => {
               return [...previousRun, batch]
             })
           ),
+        // the initial value of the accumulator is a resolved empty promise, this
+        // will be populated by the batches in the reduce()
         Promise.resolve([])
       )
       .then(batches =>
         console.log(
-          `Load successful - ${batches.length} batches of images were loaded`
+          `Load successful - ${
+            batches.length
+          } batches of images were loaded with a batch size of ${BATCH_SIZE}`
         )
       )
   }
 
   const stopLoading = () => {
-    // TODO: Implement me.
     console.log('Stop!')
     stopped = true
+    window.stop()
   }
 
   $('button.start').on('click', startLoading)
