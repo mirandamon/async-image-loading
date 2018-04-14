@@ -2,6 +2,8 @@
 
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
   <style>
     .photo-bucket {
       margin-top: 10px;
@@ -14,9 +16,41 @@
 </head>
 
 <body>
-  <button class="start">Start Loading Images</button>
-  <button class="stop">Stop Loading Images</button>
-  <div class="photo-bucket"></div>
+  <div class="container">
+    <div class="hero-container">
+      <span class="breadcrumb">
+        Influencer Sale
+      </span>
+      <h1 class="title">
+        Capricorn Clark Opens Up Her OG Streetwear Archive
+      </h1>
+      <p class="description">
+        Culture Creator and Mogul Maker Talks Hip Hop and the Rise of Streetwear
+      </p>
+      <a class="action" href="#">
+        Read all Dry Clean Only
+      </a>
+    </div>
+    <div class="curated-container">
+      <div class="curated top-left">
+        <p class="curated-description">Curated Lists 1</p>
+      </div>
+      <div class="curated bottom-left">
+        <p class="curated-description">Curated Lists 1</p>
+      </div>
+      <div class="curated top-left">
+        <p class="curated-description">Curated Lists 1</p>
+      </div>
+    </div>
+    <div>
+      <h3>Curated For You</h3>
+    </div>
+    <div>
+      <button class="start">Start Loading Images</button>
+      <button class="stop">Stop Loading Images</button>
+    </div>
+    <div class="photo-bucket"></div>
+  </div>
 
   <script src="./images.js"></script>
   <script src="./async-fiesta.js"></script>
