@@ -5,7 +5,7 @@ body {
 .container {
   display: flex;
   flex-wrap: wrap;
-  max-width: 960px;
+  max-width: 1080px;
   width: 100%;
   justify-content: center;
   margin: 0 auto;
@@ -93,4 +93,56 @@ Curated List
 .curated.bottom-left > .curated-description {
   font-size: 1.25rem;
   position: relative;
+}
+
+/*
+Curated for you
+*/
+
+.curated-for-you-container,
+.curated-photos-container {
+  margin-top: 1.5rem;
+  display: flex;
+  width: 100%;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.curated-for-you-container .header {
+  font-size: 1.25rem;
+  font-weight: 400;
+  flex: 1;
+}
+
+.curated-photos-container .post {
+  text-align: left;
+  margin: 1rem;
+}
+
+.post .relative-time {
+  margin: 0.5rem 0;
+  font-size: 0.75rem;
+  color: #a8a8a8;
+}
+
+.post .post-details {
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.post-details .brandname,
+.post-details .size {
+  margin: 0 0 0.5rem;
+}
+
+.post .title {
+  color: #7e7e7e;
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.post .price {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
 }

@@ -4,13 +4,24 @@ $(() => {
   let stopped = true
   let startedPreviously = false
 
-  const $bucket = $('.photo-bucket')
-  const draw = img => $bucket.append(img)
+  const $bucket = $('.curated-photos-container')
+  const draw = img =>
+    $bucket.append(`
+  <div class="post">
+    <img src="${img.src}" />
+    <p class="relative-time">1 minute ago</p>
+    <div class="post-details">
+      <p class="brandname">Fear of Jerry</p>
+      <p class="size">M</p>
+    </div>
+    <p class="title">Oversize Striped Tee</p>
+    <p class="price">$240</p>
+  </div>`)
   const drawCurrentBatch = batch => batch.forEach(image => draw(image))
 
   // NOTE: The height and width variables can be changed to fetch different sized images.
   const getImageUrl = id =>
-    `https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/cache=expiry:max/rotate=deg:exif/rotate=deg:0/resize=width:30,height:30,fit:crop/output=format:jpg,quality:95/compress/${id}`
+    `https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/cache=expiry:max/rotate=deg:exif/rotate=deg:0/resize=width:235,height:381,fit:crop/output=format:jpg,quality:95/compress/${id}`
 
   const asyncDownloader = new AsyncDownloader(BATCH_SIZE, getImageUrl)
 
